@@ -25,14 +25,26 @@ We will be using Apache Airflow dags to contro and monitor all tasks required fo
 <img src="images/redshift_conn.PNG" width="400"/>
 
 ## Data Workflow
+Below is the final graph view of dag in this project
 
-Below is how each task within dag works
+<img src="images/dag_graph.PNG" width="400"/>
 
+- Begin_execution: DummyOperator, indicating start of the dag
+- Create_tables: PostgresOperator, creating tables in Redshift
+- Stage_events: StageToRedshiftOperator, staging event logs data from S3 to Redshift
+- Stage_songs: StageToRedshiftOperator, staging songs data from S3 to Redshift
+- Load_songplays_fact_table: LoadFactOperator, running insertion to songplays fact table
+- Load_song_dim_table: LoadDimensionOperator, running insertion to songs dimension table
+- Load_time_dim_table: LoadDimensionOperator, running insertion to time dimension table
+- Load_artist_dim_table: LoadDimensionOperator, running insertion to artists dimension table
+- Load_user_dim_table: LoadDimensionOperator, running insertion to users dimension table
+- Run_data_quality_checks: DataQualityOperator, running data quality on fact and dimension tables in Redshift
+- Stop_execution: DummyOperator, indicating end of the dag
 
 ## Schema of Tables
 
 Below is the diagram of schemas and structure of this project <br>
-<img src = "images/DWH_Redshift.png" width = 750px>
+<img src = "images/DWH_Redshift.png" width = 500px>
 
 ### Staging Tables
 
@@ -80,5 +92,7 @@ Below is the diagram of schemas and structure of this project <br>
     |- stage_redshift.py :Create StageToRedshiftOperator class for staging tables from S3 to Redshift
   
 ## Summary
+We can successfully transfer Sparkify logs and songs data from S3 to Redshift using Airflow dag. Besides, we also create star schema fact and dimension tables in Redshift. Last but no least, data quality checks and log information in Airflow helps us understand and monitor the pipeline process in a useful way.
 
 ## Acknowledgement
+Special thanks to Udacity for providing data and technical training required to complete this project

@@ -1,5 +1,5 @@
 # Data-Pipeline-with-Apache-Airflow
-<img src="images/redshift.png" width="200"/><img src="images/S3.png" width="200"/><img src="images/airflow.png" width="200"/>
+<img src="images/Redshift.png" width="200"/><img src="images/S3.png" width="200"/><img src="images/airflow.png" width="200"/>
 
 ## Motivation
 This project is to demonstrate how to apply Apache Airflow, a well-known workflow management platform on data warehousing. In this project, we will transfer Sparkify application data from Amazon S3 storage to Amazon Redshift data warehouse.
@@ -11,18 +11,18 @@ We will be using Apache Airflow dags to contro and monitor all tasks required fo
 
 ## Airflow Settings
 1. Configuration settings
-<img src="images/airflow_conn.png" width="200"/>
+<img src="images/airflow_conn.png" width="400"/>
 
 2. Configure settings for AWS credentials: 
 - The login is your AWS access key id
 - The passwork is your AWS secret access key
-<img src="images/aws_credentials.png" width="200"/>
+<img src="images/airflow_aws.PNG" width="400"/>
 
 3. Configue connection settings for Redshift
 - You can get the host in AWS Redshift cluster property
 - The login is your database user configured for the Redshift database
 - The password is the password for the user mentioned above
-<img src="images/redshift_conn.png" width="200"/>
+<img src="images/redshift_conn.PNG" width="400"/>
 
 ## Data Workflow
 
@@ -32,7 +32,7 @@ Below is how each task within dag works
 ## Schema of Tables
 
 Below is the diagram of schemas and structure of this project <br>
-<img src = "image/DWH_Redshift.png" width = 750px>
+<img src = "images/DWH_Redshift.png" width = 750px>
 
 ### Staging Tables
 
@@ -79,3 +79,6 @@ Below is the diagram of schemas and structure of this project <br>
     |- load_fact.py: Create LoadFactOperator class for loading fact table in Redshift
     |- stage_redshift.py :Create StageToRedshiftOperator class for staging tables from S3 to Redshift
   
+## Summary
+
+## Acknowledgement

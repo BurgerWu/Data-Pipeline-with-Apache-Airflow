@@ -7,11 +7,21 @@ from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators import (LoadFactOperator, StageToRedshiftOperator, LoadDimensionOperator, DataQualityOperator)
 from helpers import SqlQueries
 
+#Create default argument for dag
+default_args = {
+    'owner': 'burger_wu',
+    'start_date': datetime.utcnow(),
+    'depends_on_past': False,
+    'catchup': False,
+    'retries': 2,
+    'retry_delay': timedelta(minutes = 5)
+}
+
 #Create DAG with daily schedule_interval and start data as now
 dag = DAG('s3toRedshift_dwh_dag',
-          start_date = datetime.utcnow(),
+          default_args = default_args,
           description = 'Load and transform data in Redshift with Airflow',
-          schedule_interval = '@daily')
+          schedule_interval = '@hourly')
 
 #Create start_operator task
 start_operator = DummyOperator(task_id = 'Begin_execution',  dag = dag)
@@ -53,7 +63,8 @@ load_songplays_table = LoadFactOperator(
     dag = dag,
     redshift_conn_id = "redshift",
     table = "songplays",
-    sql_queries = SqlQueries.songplay_table_insert)
+    sql_queries = SqlQueries.songplay_table_insert,
+    append_only = False)
 
 #Create load_user_dimension_table task
 load_user_dimension_table = LoadDimensionOperator(
@@ -61,15 +72,17 @@ load_user_dimension_table = LoadDimensionOperator(
     dag = dag,
     redshift_conn_id = "redshift",
     table = "users",
-    sql_queries = SqlQueries.user_table_insert)
-
+    sql_queries = SqlQueries.user_table_insert,
+    append_only = False)
+    
 #Create load_song_dimension_table task
 load_song_dimension_table = LoadDimensionOperator(
     task_id = 'Load_song_dim_table',
     dag = dag,
     redshift_conn_id = "redshift",
     table = "songs",
-    sql_queries = SqlQueries.song_table_insert)
+    sql_queries = SqlQueries.song_table_insert,
+    append_only = False)
 
 #Create load_artist_dimension_table task
 load_artist_dimension_table = LoadDimensionOperator(
@@ -77,7 +90,8 @@ load_artist_dimension_table = LoadDimensionOperator(
     dag = dag,
     redshift_conn_id ="redshift",
     table = "artists",
-    sql_queries = SqlQueries.artist_table_insert)
+    sql_queries = SqlQueries.artist_table_insert,
+    append_only = False)
 
 #Create load_time_dimension_table task
 load_time_dimension_table = LoadDimensionOperator(
@@ -85,7 +99,8 @@ load_time_dimension_table = LoadDimensionOperator(
     dag = dag,
     redshift_conn_id = "redshift",
     table = "time",
-    sql_queries = SqlQueries.time_table_insert)
+    sql_queries = SqlQueries.time_table_insert,
+    append_only = False)
 
 #Create run_quality_checks task
 run_quality_checks = DataQualityOperator(

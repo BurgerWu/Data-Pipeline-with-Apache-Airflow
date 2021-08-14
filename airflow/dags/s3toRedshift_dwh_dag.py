@@ -9,7 +9,7 @@ from helpers import SqlQueries
 
 #Create DAG with daily schedule_interval and start data as now
 dag = DAG('s3toRedshift_dwh_dag',
-          start_date: datetime.utcnow(),
+          start_date = datetime.utcnow(),
           description = 'Load and transform data in Redshift with Airflow',
           schedule_interval = '@daily')
 
